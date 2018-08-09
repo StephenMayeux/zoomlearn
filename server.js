@@ -9,10 +9,7 @@ const io = require('socket.io').listen(server);
 io.sockets.on('connection', routes);
 
 app.set('port', process.env.PORT || 3001);
-
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('client/build'));
-}
+app.use(express.static('client/build'));
 
 app.get('*', (request, response) => {
 	response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
