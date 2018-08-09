@@ -15,6 +15,10 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client', 'build')));
 }
 
+app.get('*', (req, res) => {
+  res.sendFile(__dirname, 'client', 'build', 'index.html');
+});
+
 server.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
