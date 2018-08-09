@@ -5,7 +5,7 @@ import './App.css';
 import slides from './bin/slides';
 
 const colors = ['#5fa55a', '#01b4bc', '#f6d51f', '#fa8925', '#fa5457'];
-const isPresenter = window.location.search.includes('true') ? 'true' : false;
+const isPresenter = window.location.search.includes('present=true') ? 'true' : false;
 const slideId = 0;
 
 const socket = io('http://localhost:3001');
