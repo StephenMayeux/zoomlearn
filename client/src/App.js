@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import _ from 'lodash';
 import io from 'socket.io-client';
 import './App.css';
 import slides from './bin/slides';
 
 const colors = ['#5fa55a', '#01b4bc', '#f6d51f', '#fa8925', '#fa5457'];
-const parsed = queryString.parse(window.location.search);
-const isPresenter = _.get(parsed, 'present', false);
-const slideId = _.get(parsed, 'slide', 0);
+const isPresenter = 'true';
+const slideId = 0;
 
 const socket = io('http://localhost:3001');
 
@@ -65,7 +63,7 @@ class App extends Component {
     socket.emit('changeSlideForClients', { slideId: newSlideId });
     this.setState({
       slideId: newSlideId,
-      backgroundColor: colors[newSlideId % slides.length] 
+      backgroundColor: colors[newSlideId % slides.length]
     });
   }
 
