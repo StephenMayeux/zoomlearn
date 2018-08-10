@@ -10,6 +10,15 @@ const parsed = query.parse(window.location.search);
 const isPresenter = _.get(parsed, 'present', false);
 const initialSlideId = _.get(parsed, 'slide', 0);
 
+const roundRobin = (array, index = 0) => {
+  return () => {
+    if (index >= array.length) index = 0;
+    return array[index++];
+  };
+};
+
+const nextColor = roundRobin(colors);
+
 const socket = io();
 
 class App extends Component {
@@ -39,7 +48,7 @@ class App extends Component {
 
   componentWillUnmount() {
     if (isPresenter === 'true') {
-      window.removeEventListener('keyup');
+      window.removeEventListener('keyup', this.handleChangeSlide);
     }
   }
 
@@ -51,7 +60,7 @@ class App extends Component {
 
   handleChangeSlide(event) {
     const { slideId } = this.state;
-    let newSlideId;
+    let newSlideId = slideId;
 
     if (event.key === 'ArrowRight') {
       if (slideId === slides.length - 1) {
@@ -75,7 +84,7 @@ class App extends Component {
 
   render() {
     const { slideId } = this.state;
-    const backgroundColor = colors[slideId % slides.length];
+    const backgroundColor = nextColor();
     const { hanzi, pinyin } = slides[slideId];
     return (
       <div className="App">
