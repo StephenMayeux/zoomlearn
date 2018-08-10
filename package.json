@@ -15,7 +15,7 @@
     "server": "node server.js",
     "client": "node start-client.js",
     "lint": "eslint .",
-    "heroku-postinstall": "cd client && yarn build"
+    "heroku-postinstall": "cd client && yarn && yarn build"
   },
   "devDependencies": {
     "concurrently": "3.1.0",
