@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "node": "10.4.0",
-    "npm": "6.1.0"
+    "yarn": "1.7.0"
   },
   "dependencies": {
     "express": "4.13.3",
@@ -15,7 +15,7 @@
     "server": "node server.js",
     "client": "node start-client.js",
     "lint": "eslint .",
-    "postinstall": "cd client && npm run build"
+    "heroku-postinstall": "cd client && yarn build"
   },
   "devDependencies": {
     "concurrently": "3.1.0",
