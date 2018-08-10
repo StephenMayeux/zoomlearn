@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
+import query from 'query-string';
 import _ from 'lodash';
 import io from 'socket.io-client';
 import './App.css';
 import slides from './bin/slides';
 
 const colors = ['#5fa55a', '#01b4bc', '#f6d51f', '#fa8925', '#fa5457'];
-const isPresenter = window.location.search.includes('present=true') ? 'true' : false;
-const slideId = 0;
+const parsed = query.parse(window.location.search);
+const isPresenter = _.get(parsed, 'present', false);
+const initialSlideId = _.get(parsed, 'slide', 0);
 
-const socket = io('http://localhost:3001');
+const socket = io(process.env.BACKEND_SERVICE || 'http://localhost:3000');
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      maxSlides: slides.length,
-      slideId: parseInt(slideId, 10),
-      backgroundColor: colors[slideId % slides.length]
+      slideId: parseInt(initialSlideId, 10),
     }
 
     this.handleUpdateSlide = this.handleUpdateSlide.bind(this);
@@ -25,25 +25,32 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     if (isPresenter === false || isPresenter !== 'true') {
       socket.on('goToSlide', this.handleUpdateSlide);
-    }
-
-    if (isPresenter === 'true') {
+      socket.on('welcome', this.handleWelcome.bind(this))
+    } else if (isPresenter === 'true') {
       window.addEventListener('keyup', this.handleChangeSlide);
+    }
+  }
+
+  handleWelcome({ msg }) {
+    console.log(msg)
+  }
+
+  componentWillUnmount() {
+    if (isPresenter === 'true') {
+      window.removeEventListener('keyup');
     }
   }
 
   handleUpdateSlide({ slideId }) {
     this.setState({
-      slideId,
-      backgroundColor: colors[slideId % slides.length]
+      slideId
     });
   }
 
   handleChangeSlide(event) {
-    const { maxSlides, slideId } = this.state;
+    const { slideId } = this.state;
     let newSlideId;
 
     if (event.key === 'ArrowRight') {
@@ -62,14 +69,16 @@ class App extends Component {
 
     socket.emit('changeSlideForClients', { slideId: newSlideId });
     this.setState({
-      slideId: newSlideId,
-      backgroundColor: colors[newSlideId % slides.length]
+      slideId: newSlideId
     });
   }
 
   render() {
-    const { slideId, backgroundColor } = this.state;
+    const { slideId } = this.state;
+    const backgroundColor = colors[slideId % slides.length];
     const { hanzi, pinyin } = slides[slideId];
+    console.log('poop', { hanzi, pinyin })
+    // return <div>Hello world</div>
     return (
       <div className="App">
         <div
