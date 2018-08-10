@@ -10,7 +10,7 @@ const parsed = query.parse(window.location.search);
 const isPresenter = _.get(parsed, 'present', false);
 const initialSlideId = _.get(parsed, 'slide', 0);
 
-const socket = io(process.env.BACKEND_SERVICE || 'http://localhost:3000');
+const socket = io('https://zoomlearn.herokuapp.com');
 
 class App extends Component {
   constructor(props) {
