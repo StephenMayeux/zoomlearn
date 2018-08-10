@@ -14,8 +14,7 @@
     "start:dev": "concurrently \"nodemon server.js\" \"npm run client\"",
     "server": "node server.js",
     "client": "node start-client.js",
-    "lint": "eslint .",
-    "heroku-postinstall": "cd client && yarn && yarn build"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "concurrently": "3.1.0",
