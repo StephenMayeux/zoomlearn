@@ -10,7 +10,7 @@ const parsed = query.parse(window.location.search);
 const isPresenter = _.get(parsed, 'present', false);
 const initialSlideId = _.get(parsed, 'slide', 0);
 
-const socket = io('https://zoomlearn.herokuapp.com');
+const socket = io();
 
 class App extends Component {
   constructor(props) {
@@ -77,8 +77,6 @@ class App extends Component {
     const { slideId } = this.state;
     const backgroundColor = colors[slideId % slides.length];
     const { hanzi, pinyin } = slides[slideId];
-    console.log('poop', { hanzi, pinyin })
-    // return <div>Hello world</div>
     return (
       <div className="App">
         <div
